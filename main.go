@@ -87,11 +87,12 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	port := os.Getenv("PORT")
 	host := os.Getenv("HOST")
+	image_dir := os.Getenv("IMAGE_DIR")
 	addr := fmt.Sprintf("%s:%s", host, port)
 	r := mux.NewRouter()
-	image_dir := "web/images"
-	image_prefix := "images"
-	r.PathPrefix(image_prefix).Handler(http.StripPrefix(image_prefix, http.FileServer(http.Dir(image_dir))))
+	image_prefix := "/images/"
+	image_server := http.FileServer(http.Dir(image_dir))
+	r.PathPrefix(image_prefix).Handler(http.StripPrefix(image_prefix, image_server))
 	mdb := createDatabase()
 	r.HandleFunc("/{user}", createHomeHandler(mdb))
 	r.HandleFunc("/", indexHandler)

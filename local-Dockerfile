@@ -14,8 +14,10 @@ RUN adduser -S -D -H -h /app appuser
 USER appuser
 COPY --from=builder /build/main /app/
 COPY --from=builder /build/web/* /app/web/
+COPY --from=builter /build/web/images/* /app/web/images/
 WORKDIR /app
 EXPOSE 8080
+ENV IMAGE_DIR /app/web/images
 ENV PORT 8080
 ENV HOST 0.0.0.0
 CMD ["./main"]
