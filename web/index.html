@@ -5,14 +5,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>upload</title>
+    <title>bag of beer</title>
+    <style type="text/css" media="screen">
+      h1 {
+        font-family: Roboto, monospace;
+      }
+    </style>
   </head>
   <body>
+    <form action="/{{.U}}" method="get" accept-charset="utf-8">
+      <input type="submit" value="refresh" />
+    </form>
     <form action="/{{.U}}" method="post">
       <input type="submit" value="what do i drink" />
     </form>
-    {{range $key, $value := .Vals}}
-    <h1 id="">{{ $key }} {{$value}}</h1>
+    {{ range $key, $value := .Vals }}
+    <h1 style>{{ $key }} {{$value}}</h1>
     {{end}}
   </body>
 </html>
