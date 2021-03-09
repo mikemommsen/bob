@@ -89,11 +89,12 @@ func main() {
 	host := os.Getenv("HOST")
 	addr := fmt.Sprintf("%s:%s", host, port)
 	r := mux.NewRouter()
+	image_dir := "web/images"
+	image_prefix := "images"
+	r.PathPrefix(image_prefix).Handler(http.StripPrefix(image_prefix, http.FileServer(http.Dir(image_dir))))
 	mdb := createDatabase()
 	r.HandleFunc("/{user}", createHomeHandler(mdb))
 	r.HandleFunc("/", indexHandler)
-	image_dir := "web/images"
-	r.PathPrefix(image_dir).Handler(http.StripPrefix(image_dir, http.FileServer(http.Dir(image_dir))))
 	srv := &http.Server{
 		Addr:    addr,
 		Handler: r,
