@@ -92,6 +92,8 @@ func main() {
 	mdb := createDatabase()
 	r.HandleFunc("/{user}", createHomeHandler(mdb))
 	r.HandleFunc("/", indexHandler)
+	image_dir := "web/images"
+	r.PathPrefix(image_dir).Handler(http.StripPrefix(image_dir, http.FileServer(http.Dir(image_dir))))
 	srv := &http.Server{
 		Addr:    addr,
 		Handler: r,
