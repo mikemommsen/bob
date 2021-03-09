@@ -1,6 +1,6 @@
 version: "3.9"
 services:
   web:
-    image: docker.io/mommsen/bob:latest
+    image: mommsen/bob:latest
     ports:
       - "8080:8080"
