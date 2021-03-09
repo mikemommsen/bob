@@ -15,5 +15,6 @@ USER appuser
 COPY --from=builder /build/main /app/
 COPY --from=builder /build/web/* /app/web/
 WORKDIR /app
-EXPOSE 5000
+EXPOSE 8080
+ENV PORT 8080
 CMD ["./main"]
