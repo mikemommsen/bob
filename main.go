@@ -80,6 +80,10 @@ func createHomeHandler(db *database) http.HandlerFunc {
 		db.writeOut(w, vars["user"])
 	}
 }
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("welcome to bag of beer"))
+
+}
 func main() {
 	port := os.Getenv("PORT")
 	host := os.Getenv("HOST")
@@ -87,6 +91,7 @@ func main() {
 	r := mux.NewRouter()
 	mdb := createDatabase()
 	r.HandleFunc("/{user}", createHomeHandler(mdb))
+	r.HandleFunc("/", indexHandler)
 	srv := &http.Server{
 		Addr:    addr,
 		Handler: r,
