@@ -17,4 +17,5 @@ COPY --from=builder /build/web/* /app/web/
 WORKDIR /app
 EXPOSE 8080
 ENV PORT 8080
+ENV HOST 0.0.0.0
 CMD ["./main"]
