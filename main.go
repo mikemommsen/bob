@@ -50,7 +50,7 @@ func (db *database) pop(user string) error {
 
 var users = []string{"matt", "noah", "mike"}
 
-func createDatabase() *database {
+func createDatabase() (*database, error) {
 	m := make(map[string][]int)
 	l := make(map[string]string)
 	array := []int{1, 2, 3, 4, 5, 6}
@@ -58,9 +58,11 @@ func createDatabase() *database {
 		m[v] = array
 		l[v] = "not started"
 	}
-	tt, _ := template.ParseFiles("web/index.html")
-
-	return &database{m, sync.Mutex{}, l, tt}
+	tt, err := template.ParseFiles("web/index.html")
+	if err != nil {
+		return nil, err
+	}
+	return &database{m, sync.Mutex{}, l, tt}, nil
 }
 func (db *database) writeOut(w io.Writer, u string) {
 	l := tadata{u, db.lastValues}
@@ -93,7 +95,10 @@ func main() {
 	image_prefix := "/images/"
 	image_server := http.FileServer(http.Dir(image_dir))
 	r.PathPrefix(image_prefix).Handler(http.StripPrefix(image_prefix, image_server))
-	mdb := createDatabase()
+	mdb, err := createDatabase()
+	if err != nil {
+		log.Fatal(err)
+	}
 	r.HandleFunc("/{user}", createHomeHandler(mdb))
 	r.HandleFunc("/", indexHandler)
 	srv := &http.Server{
